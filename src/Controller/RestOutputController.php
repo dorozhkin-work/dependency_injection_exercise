@@ -2,14 +2,40 @@
 
 namespace Drupal\dependency_injection_exercise\Controller;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
-use GuzzleHttp\Exception\GuzzleException;
+use Drupal\dependency_injection_exercise\PhotosProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the rest output.
  */
 class RestOutputController extends ControllerBase {
+
+  /**
+   * Dependency injection exercise photos provider service.
+   *
+   * @var \Drupal\dependency_injection_exercise\PhotosProviderInterface
+   */
+  protected $provider;
+
+  /**
+   * RestOutputController constructor.
+   *
+   * @param \Drupal\dependency_injection_exercise\PhotosProviderInterface $provider
+   *   Photos provider.
+   */
+  public function __construct(PhotosProviderInterface $provider) {
+    $this->provider = $provider;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('dependency_injection_exercise.photos_provider')
+    );
+  }
 
   /**
    * Displays the photos.
@@ -29,12 +55,8 @@ class RestOutputController extends ControllerBase {
     ];
 
     // Try to obtain the photo data via the external API.
-    try {
-      $response = \Drupal::httpClient()->request('GET', 'https://jsonplaceholder.typicode.com/albums/5/photos');
-      $raw_data = $response->getBody()->getContents();
-      $data = Json::decode($raw_data);
-    }
-    catch (GuzzleException $e) {
+    $data = $this->provider->album(5)->fetch();
+    if (empty($data)) {
       $build['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
