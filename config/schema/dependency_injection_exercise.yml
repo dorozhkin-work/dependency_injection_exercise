@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Dependncy injection exercise module.
+dependency_injection_exercise.settings:
+  type: config_object
+  label: 'Dependncy injection exercise settings'
+  mapping:
+    provider_url_pattern:
+      type: string
+      label: 'Provider request url pattern'

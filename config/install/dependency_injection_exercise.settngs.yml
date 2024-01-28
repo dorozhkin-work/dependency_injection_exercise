@@ -1,0 +1,1 @@
+provider_url_pattern: 'https://jsonplaceholder.typicode.com/albums/%s/photos'

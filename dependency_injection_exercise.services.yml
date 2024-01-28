@@ -1,0 +1,4 @@
+services:
+  dependency_injection_exercise.photos_provider:
+    class: Drupal\dependency_injection_exercise\PhotosProvider
+    arguments: ['@http_client', '@config.factory', '@logger.factory']
