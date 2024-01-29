@@ -2,3 +2,8 @@ services:
   dependency_injection_exercise.photos_provider:
     class: Drupal\dependency_injection_exercise\PhotosProvider
     arguments: ['@http_client', '@config.factory', '@logger.factory']
+
+  dependency_injection_exercise.breadcrumb:
+    class: Drupal\dependency_injection_exercise\DependencyInjectionExerciseBreadcrumbBuilder
+    tags:
+      - { name: breadcrumb_builder, priority: 1000 }
