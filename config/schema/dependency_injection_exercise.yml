@@ -6,3 +6,6 @@ dependency_injection_exercise.settings:
     provider_url_pattern:
       type: string
       label: 'Provider request url pattern'
+    nope_email:
+      type: string
+      label: 'Nope email address'
